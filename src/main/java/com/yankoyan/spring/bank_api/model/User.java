@@ -27,12 +27,18 @@ public class User {
     private LocalDate registrationDate;
 
     private String password;
-    private Boolean enabled;
+    private boolean enabled;
     @Column(name = "verification_code")
     private String verificationCode;
-    @Column(name = "verification_expiration")
-    private LocalDateTime verificationExpiration;
+    @Column(name = "verification_code_expiration")
+    private LocalDateTime verificationCodeExpiration;
     private String role;
 
     public User(){}
+
+    public User(String username, String email, String password) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+    }
 }

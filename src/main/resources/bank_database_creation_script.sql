@@ -10,7 +10,7 @@ CREATE TABLE users
   registration_date date NOT NULL,
   enabled boolean NOT NULL DEFAULT false,
   verification_code varchar(8),
-  verification_expiration timestamptz,
+  verification_code_expiration timestamptz,
   role varchar(30) NOT NULL
 );
 
