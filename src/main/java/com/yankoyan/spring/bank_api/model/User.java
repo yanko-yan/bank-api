@@ -1,7 +1,9 @@
 package com.yankoyan.spring.bank_api.model;
 
+import com.yankoyan.spring.bank_api.dto.RegisterUserDto;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
@@ -11,6 +13,7 @@ import java.time.LocalDateTime;
 @Table(name = "users")
 @Getter
 @Setter
+@NoArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +25,7 @@ public class User {
     @Column(name = "last_name")
     private String lastName;
     @Column(name = "birth_date")
-    private LocalDateTime birthDate;
+    private LocalDate birthDate;
     @Column(name = "registration_date")
     private LocalDate registrationDate;
 
@@ -34,11 +37,25 @@ public class User {
     private LocalDateTime verificationCodeExpiration;
     private String role;
 
-    public User(){}
+    public static User createNewUser(
+            RegisterUserDto userDto,
+            String encodedPassword,
+            String verificationCode
+    ){
+        User user = new User();
 
-    public User(String username, String email, String password) {
-        this.username = username;
-        this.email = email;
-        this.password = password;
+        user.username = userDto.getUsername();
+        user.email = userDto.getEmail();
+        user.firstName = userDto.getFirstName();
+        user.lastName = userDto.getLastName();
+        user.birthDate = userDto.getBirthDate();
+        user.registrationDate = LocalDate.now();
+        user.password = encodedPassword;
+        user.enabled = false;
+        user.verificationCode = verificationCode;
+        user.verificationCodeExpiration = LocalDateTime.now().plusMinutes(20);
+        user.role = "ROLE_USER";
+
+        return user;
     }
 }
