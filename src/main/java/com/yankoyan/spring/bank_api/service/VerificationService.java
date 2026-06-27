@@ -8,6 +8,7 @@ import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StreamUtils;
 
 import java.io.IOException;
@@ -39,6 +40,7 @@ public class VerificationService {
             throw new UserNotFoundException();
     }
 
+    @Transactional
     public void resendVerificationEmail(String email){
         Optional<User> userOptional = userRepository.findByEmail(email);
         if(userOptional.isPresent()){
@@ -47,8 +49,8 @@ public class VerificationService {
                 throw new EmailAlreadyVerifiedException();
             user.setVerificationCode(generateVerificationCode());
             user.setVerificationCodeExpiration(LocalDateTime.now().plusMinutes(20));
-            sendVerificationEmail(user);
             userRepository.save(user);
+            sendVerificationEmail(user);
         } else
             throw new UserNotFoundException();
     }

@@ -12,6 +12,7 @@ import com.yankoyan.spring.bank_api.service.RegistrationService;
 import com.yankoyan.spring.bank_api.service.VerificationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,9 +26,11 @@ public class AuthController {
     private final VerificationService verificationService;
 
     @PostMapping("/signup")
-    public ResponseEntity<User> register(@RequestBody @Valid RegisterUserDto userDto){
-        User registeredUser = registrationService.signUp(userDto);
-        return ResponseEntity.ok(registeredUser);
+    public ResponseEntity<String> register(@RequestBody @Valid RegisterUserDto userDto){
+        registrationService.signUp(userDto);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body("User successfully created");
     }
 
     @PostMapping("/login")
