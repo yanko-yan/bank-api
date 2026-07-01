@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -36,6 +37,9 @@ public class User {
     @Column(name = "verification_code_expiration")
     private LocalDateTime verificationCodeExpiration;
     private String role;
+
+    @OneToMany(mappedBy = "owner")
+    private List<Account> accounts;
 
     public static User createNewUser(
             RegisterUserDto userDto,

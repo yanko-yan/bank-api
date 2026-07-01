@@ -24,6 +24,7 @@ CREATE TABLE accounts
   number bigint DEFAULT(nextval('account_numbers')) PRIMARY KEY,
   balance decimal(14, 2) NOT NULL DEFAULT 0.00 CHECK(balance >= 0),
   status varchar(20) NOT NULL CHECK(status IN ('ACTIVE', 'BLOCKED', 'CLOSED')),
+  opening_date date NOT NULL,
   user_id bigint REFERENCES users(id) NOT NULL
 );
 
